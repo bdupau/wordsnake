@@ -37,11 +37,8 @@ class Wordsnake:
     def get_current_word(self):
         return self.__snake[-1]
 
-    def print_current_word(self):
-        print(self.get_current_word())
-
-    def print(self):
-        print(self.__snake)
+    def __str__(self):
+        return str(self.__snake)
 
     # Adds a word to the wordsnake, if it is valid
     def add_word(self, continuation='empty'):
@@ -65,4 +62,4 @@ class WordsnakeTester:
         snake.add_word('doperwt')
         snake.add_word('uurdoopisgeenwoord')
         snake.add_word('opstaan')
-        snake.print()
+        print(snake)
