@@ -1,0 +1,61 @@
+<mockup version="1.0" skin="sketch" fontFace="Balsamiq Sans" measuredW="1391" measuredH="651" mockupW="997" mockupH="575">
+  <controls>
+    <control controlID="0" controlTypeID="com.balsamiq.mockups::BrowserWindow" x="446" y="76" w="945" h="575" measuredW="450" measuredH="400" zOrder="0" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Wordsnape%0Ahttp%3A//wordsnake.courier10pt.com</text>
+      </controlProperties>
+    </control>
+    <control controlID="1" controlTypeID="com.balsamiq.mockups::TextArea" x="589" y="251" w="550" h="279" measuredW="200" measuredH="140" zOrder="1" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>SNAKEBOT%3A%20%09Starting%20a%20new%20game%2C%20it%27s%20*Bastiaan*%27s%20%20turn%0ASNAKEBOT%3A%20%09Use%20%27%3E%20_yourword_%27%20to%20submit%20a%20word%20%0AJob%3A%20%09%09Oh%20nee%20he%20niet%20weer%0ABob%3A%09%09Ja%20hij%20mag%20altijd%20beginnen%0ASNAKEBOT%3A%20%09Bastiaan%20entered%3A%20%27Banaan%27%27%0ASNAKEBOT%3A%20%09It%27s%20**Bob**%27s%20turn</text>
+      </controlProperties>
+    </control>
+    <control controlID="2" controlTypeID="com.balsamiq.mockups::TextInput" x="589" y="545" w="550" h="-1" measuredW="68" measuredH="27" zOrder="2" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>%3Eananas</text>
+      </controlProperties>
+    </control>
+    <control controlID="3" controlTypeID="com.balsamiq.mockups::DataGrid" x="1161" y="251" w="141" h="141" measuredW="113" measuredH="141" zOrder="3" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Name%2C%20Score%0ABastiaan%2C%20160%0A*Bob*%2C%20120%0AJob%2C%20100%0ALouis%2C%2020%0A%7B75L%2C%200R%7D</text>
+      </controlProperties>
+    </control>
+    <control controlID="4" controlTypeID="com.balsamiq.mockups::Label" x="589" y="188" w="-1" h="-1" measuredW="123" measuredH="21" zOrder="4" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>You%20are%20logged%20in%20as%3A</text>
+      </controlProperties>
+    </control>
+    <control controlID="5" controlTypeID="com.balsamiq.mockups::SubTitle" x="589" y="209" w="-1" h="-1" measuredW="41" measuredH="27" zOrder="5" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Bob</text>
+      </controlProperties>
+    </control>
+    <control controlID="6" controlTypeID="com.balsamiq.mockups::SubTitle" x="797" y="209" w="-1" h="-1" measuredW="83" measuredH="27" zOrder="6" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Banaan</text>
+      </controlProperties>
+    </control>
+    <control controlID="7" controlTypeID="com.balsamiq.mockups::Label" x="797" y="188" w="-1" h="-1" measuredW="68" measuredH="21" zOrder="7" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>The%20word%20is</text>
+      </controlProperties>
+    </control>
+    <control controlID="8" controlTypeID="com.balsamiq.mockups::Label" x="1186" y="188" w="-1" h="-1" measuredW="116" measuredH="21" zOrder="8" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Time%20left%20%28seconds%29</text>
+      </controlProperties>
+    </control>
+    <control controlID="9" controlTypeID="com.balsamiq.mockups::SubTitle" x="1248" y="209" w="-1" h="-1" measuredW="54" measuredH="27" zOrder="9" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>0%3A55%20</text>
+      </controlProperties>
+    </control>
+    <control controlID="10" controlTypeID="com.balsamiq.mockups::VCurly" x="394" y="251" w="180" h="321" measuredW="180" measuredH="140" zOrder="10" locked="false" isInGroup="-1">
+      <controlProperties>
+        <color>2848996</color>
+        <direction>right</direction>
+        <text>IRC%20/%20Chat%0Astyle%20interface</text>
+      </controlProperties>
+    </control>
+  </controls>
+</mockup>
