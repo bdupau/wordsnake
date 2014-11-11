@@ -1,16 +1,24 @@
 # Wordsnake over http
 
-Als je wordsnake wilt spelen via de browser dan zal je berichten van spelers moeten kunnen ontvangen en ook weer berichten terug moeten kunnen sturen met bijvoorbeeld updates over de gamestate. 
+Als je wordsnake wilt spelen via de browser dan zal je berichten van spelers moeten kunnen ontvangen. Bijvoorbeeld, een speler (client) die aan de beurt is geeft een nieuw woord door wat wordt ontvangen door de server. Je moet ook berichten kunnen verzenden naar de spelers. Bijvoorbeeld wanneer een nieuw woord is doorgegeven, dan stuur je vanaf de server een update over de gamestate naar de spelers (clients).
 
-Typisch van standaard http verkeer is dat het initiatief bij de client ligt. In het geval van een website stuurt de gebruiker typisch een http request en de server antwoordt met de response in de vorm van een html pagina.
+Bij http verkeer ligt van oudsher het initiatief bij de client. Bijvoorbeeld: in het geval van een website stuurt de gebruiker een http request en de server antwoordt met een http response die een html pagina bevat.
 
-Wat bij wordsnake afwijkt van die request / response patroon is dat er in het spel soms gegevens gestuurd moeten worden op initiatief van de server. Bijvoorbeeld: een speler geeft een nieuw woord. Aan de server kant wordt het woord volgens de spelregels verwerkt. Nu moet er een bericht naar alle deelnemers met deze update. 
+Wat bij wordsnake afwijkt van dit patroon is dat er in het spel soms gegevens gestuurd moeten worden op initiatief van de server. Wanneer de gamestate verandert wil je een bericht aan alle clients doorgeven. 
 
-Van origine is het http protocol hier niet op berust. Een typische truuk is om elke client telkens (bijv. per seconde) een request naar de server te laten sturen met als verzoek de spelstatus. Deze techniek heet 'polling'
+Een typische workaround om berichtgeving van de serverkant mogelijk te maken is 'polling'. De clients sturen herhaaldelijk een request naar de server voor een update van de spelstatus. 
+
+> En heb je nog nieuws?
+> En heb je nog nieuws?
+> En heb je nog nieuws?
+> En heb je nog nieuws?
+> En heb je nog nieuws?
 
 Een alternatief voor dit 'pollen' is het gebruik van een socket. In dit geval stuurt de client een verzoek met een callback adres waarop de client boodschappen van de server zal ontvangen. 
 
-Er zijn verschillende technieken die vergelijkbaar zijn met sockets. Er zijn ook frameworks die afhankelijk van de technische mogelijkheden van de client de juiste techniek kiezen en hierbovenop een uniforme API bieden. [Socket.IO](http://socket.io/) is een voorbeeld wat ik heb leren kennen via [NodeJS](http://nodejs.org/). NodeJS is een server die je programmeert in javascript. Voor onze spelengine gaan we python gebruiken.
+> Als je nieuws hebt dan bel maar even op dit nummer
+
+Op het spectrum tussen polling en het gebruik van sockets liggen nog een aantal technieken die hetzelfde doel voor ogen hebben. Om voor elke client de best mogelijke techniek aan te wenden zijn er speciale frameworks. Deze kiezen naargelang de technische mogelijkheden van de client de optimale techniek en bieden de programmeur een uniforme interface. [Socket.IO](http://socket.io/) is een voorbeeld wat ik heb leren kennen via [NodeJS](http://nodejs.org/). NodeJS is een server die je programmeert in javascript. Voor onze spelengine gaan we python gebruiken.
 
 De vraag is nu of er voor python ook een equivalent van Socket.IO is, of dat we een 1-2-tje moeten opzetten tussen een NodeJS server en een Python service die als game engine werkt.
 
