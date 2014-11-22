@@ -1,22 +1,24 @@
 __author__ = 'Bastiaan & Bob'
 
-from bootstrap import get_wordsnake
+from game import Game
+
 
 class WordsnakeTester:
 
     def __init__(self):
-        snake = get_wordsnake()
-        snake.init_word('strapless-beha')
-        snake.add_word('behaard')
-        snake.add_word('behang')
-        snake.add_word('behaarde')
-        snake.add_word('haarzakje')
-        snake.add_word('haardvuur')
-        snake.add_word('vuurdoop')
-        snake.add_word('doperwt')
-        snake.add_word('uurdoopisgeenwoord')
-        snake.add_word('opstaan')
-        print(snake)
+        game = Game()
+        print(game.start_game(['Jan', 'Piet']))
+        print(game.add_word('Kees', 'behaard'))
+        print(game.add_word('Jan', 'behaard'))
+        print(game.add_word('Piet', 'behang'))
+        print(game.add_word('Piet', 'behaarde'))
+        print(game.add_word('Jan', 'haarzakje'))
+        print(game.add_word('Jan', 'haardvuur'))
+        print(game.add_word('Piet', 'vuurdoop'))
+        print(game.add_word('Jan', 'doperwt'))
+        print(game.add_word('Piet', 'uurdoopisgeenwoord'))
+        print(game.add_word('Jan', 'opstaan'))
+        # print(snake)
 
 tester = WordsnakeTester()
 
