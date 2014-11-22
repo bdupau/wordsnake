@@ -20,6 +20,31 @@ class Wordsnake:
             size_overlap += 1
         return False
 
+    def __is_empty(self):
+        if len(self.__snake) == 0:
+            return True
+        return False
+
+    def get_current_word(self):
+        return self.__snake[-1]
+
+    def __str__(self):
+        return str(self.__snake)
+
+    # Adds a word to the wordsnake, if it is valid
+    def add_word(self, continuation='empty'):
+        if not self.__is_valid_word(continuation):
+            return False
+        if self.__is_empty():
+            self.__snake.append(continuation)
+            return True
+        if self.__overlap(self.get_current_word(), continuation):
+            self.__snake.append(continuation)
+            return True
+        return False
+
+
+'''
     def get_overlap_size(self, word1, word2):
         size_overlap = 0
         max_overlap = len(word1) - 1
@@ -32,30 +57,5 @@ class Wordsnake:
             size_overlap += 1
 
         return size_overlap
-
-    def __is_valid_continuation(self, current_word, continuation):
-        return self.__is_valid_word(continuation) and self.__overlap(current_word, continuation)
-
-    def get_current_word(self):
-        return self.__snake[-1]
-
-    def __str__(self):
-        return str(self.__snake)
-
-    def init_word(self, word):
-        self.__snake.append(word)
-
-    # Adds a word to the wordsnake, if it is valid
-    def add_word(self, continuation='empty'):
-
-        if self.__is_valid_continuation(self.get_current_word(), continuation):
-            self.__snake.append(continuation)
-            return True
-        return False
-
-    def get_dictionary(self):
-        self.add_word()
-        return self.__dictionary
-
-
+'''
 
