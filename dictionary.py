@@ -2,6 +2,7 @@ __author__ = 'Bastiaan'
 
 
 class Dictionary:
+
     def __init__(self, language=None):
         self._language = language
         self._load_dictionary()
