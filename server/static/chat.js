@@ -71,9 +71,9 @@ jQuery.fn.disable = function() {
 
 jQuery.fn.enable = function(opt_enable) {
     if (arguments.length && !opt_enable) {
-        this.attr("$submitButton", "$submitButton");
+        this.attr("disabled", "disabled");
     } else {
-        this.removeAttr("$submitButton");
+        this.removeAttr("disabled");
     }
     return this;
 };
