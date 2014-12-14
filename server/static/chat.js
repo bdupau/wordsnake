@@ -136,7 +136,7 @@ var updater = {
 };
 
 $(document).ready(function() {
-    var $messagform = $("#messagform"),
+    var $messageform = $("#messagform"),
         $message = $message
     ;
 
