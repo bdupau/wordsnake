@@ -9,22 +9,34 @@ class Game:
         self._add_word = fn_add_word
         self._score = fn_score
 
+    def game_finished(self):
+        if max(self._players.values()) > 25:
+            return True
+        return False
+
     def start_game(self, players):
         if self._players.__len__() > 0:
-            return "Cannot start a game while game is in progress."
+            return "Het is niet mogelijk het spel te starten. Het spel is al gestart."
         for player in players:
             if player in self._players:
                 self._players.clear()
-                return "Cannot start a game with identical players."
+                return "Het is niet mogelijk een spel te starten. Er spelers zijn met dezelfde naam."
             self._players[player] = 0
-        return "Starting a new game."
+        return "Nieuw spel is gestart."
 
     def add_word(self, player, word):
+        if self._players.__len__() == 0:
+            return "Het is niet mogelijk een woord toe te voegen. Het spel is nog niet begonnen."
+        if self.game_finished():
+            return "Het is niet mogelijk een woord toe te voegen. Het spel is al afgelopen."
         if player not in self._players:
-            return "The word \'{}\' was not added to the wordsnake, because {} is not playing in this game.".format(word, player)
+            return "Het is niet mogelijk een woord toe te voegen. {} is geen deelnemer aan het spel.".format(player)
         current_word = self._get_current_word()
         if self._add_word(word):
             score = self._score(current_word, word)
             self._players[player] += score
-            return "{0} added the word \'{1}\' to the wordsnake for {2} points. {0} now has {3} points.".format(player, word, score, self._players[player])
-        return "The word \'{}\' was not added to the wordsnake, because it is invalid.".format(word)
+            bot_text = "{0} heeft \'{1}\' aan de wordsnake toegevoegd voor {2} punten. {0} heeft nu {3} punten.".format(player, word, score, self._players[player])
+            if self.game_finished():
+                bot_text += " {} heeft het spel gewonnen !".format(player)
+            return bot_text
+        return "Het woord \'{}\' is niet valide.".format(word)
