@@ -12,35 +12,21 @@
 // License for the specific language governing permissions and limitations
 // under the License.
 
-$(document).ready(function() {
-    if (!window.console) window.console = {};
-    if (!window.console.log) window.console.log = function() {};
-
-    $("#messageform").live("submit", function() {
-        newMessage($(this));
-        return false;
-    });
-    $("#messageform").live("keypress", function(e) {
-        if (e.keyCode == 13) {
-            newMessage($(this));
-            return false;
-        }
-    });
-    $("#message").select();
-    updater.poll();
-});
-
-function newMessage(form) {
-    var message = form.formToDict();
-    var disabled = form.find("input[type=submit]");
-    disabled.disable();
+function newMessage($form) {
+    var message = $form.formToDict(),
+        $submitButton = $form.find("input[type=submit]")
+    ;
+    
+    $submitButton.disable();
+    
     $.postJSON("/a/message/new", message, function(response) {
         updater.showMessage(response);
         if (message.id) {
             form.parent().remove();
-        } else {
+        } 
+        else {
             form.find("input[type=text]").val("").select();
-            disabled.enable();
+            $submitButton.enable();
         }
     });
 }
@@ -52,12 +38,20 @@ function getCookie(name) {
 
 jQuery.postJSON = function(url, args, callback) {
     args._xsrf = getCookie("_xsrf");
-    $.ajax({url: url, data: $.param(args), dataType: "text", type: "POST",
-            success: function(response) {
-        if (callback) callback(eval("(" + response + ")"));
-    }, error: function(response) {
-        console.log("ERROR:", response)
-    }});
+    $.ajax({
+        url: url, 
+        data: $.param(args), 
+        dataType: "text", 
+        type: "POST",
+        success: function(response) {
+            if (callback) {
+                callback(eval("(" + response + ")"));
+            }
+        }, 
+        error: function(response) {
+            console.log("ERROR:", response);
+        }
+    });
 };
 
 jQuery.fn.formToDict = function() {
@@ -77,9 +71,9 @@ jQuery.fn.disable = function() {
 
 jQuery.fn.enable = function(opt_enable) {
     if (arguments.length && !opt_enable) {
-        this.attr("disabled", "disabled");
+        this.attr("$submitButton", "$submitButton");
     } else {
-        this.removeAttr("disabled");
+        this.removeAttr("$submitButton");
     }
     return this;
 };
@@ -90,10 +84,17 @@ var updater = {
 
     poll: function() {
         var args = {"_xsrf": getCookie("_xsrf")};
-        if (updater.cursor) args.cursor = updater.cursor;
-        $.ajax({url: "/a/message/updates", type: "POST", dataType: "text",
-                data: $.param(args), success: updater.onSuccess,
-                error: updater.onError});
+        if (updater.cursor) {
+            args.cursor = updater.cursor;
+        }
+        $.ajax({
+            url: "/a/message/updates", 
+            type: "POST", 
+            dataType: "text",
+            data: $.param(args), 
+            success: updater.onSuccess,
+            error: updater.onError
+        });
     },
 
     onSuccess: function(response) {
@@ -133,3 +134,28 @@ var updater = {
         node.slideDown();
     }
 };
+
+$(document).ready(function() {
+    var $messagform = $("#messagform"),
+        $message = $message
+    ;
+
+    if (!window.console) window.console = {};
+    if (!window.console.log) window.console.log = function() {};
+
+    $messageform.live("submit", function() {
+        newMessage($(this));
+        return false;
+    });
+
+    $messageform.live("keypress", function(e) {
+        if (e.keyCode == 13) {
+            newMessage($(this));
+            return false;
+        }
+    });
+
+    $("#message").select();
+
+    updater.poll();
+});

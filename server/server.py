@@ -33,6 +33,9 @@ from tornado.options import define, options, parse_command_line
 define("port", default=8888, help="run on the given port", type=int)
 define("debug", default=False, help="run in debug mode")
 
+class BaseHandler(tornado.web.RequestHandler):
+    def get_current_user(self):
+        return self.get_secure_cookie("user")
 
 class MessageBuffer(object):
     def __init__(self):
@@ -76,26 +79,12 @@ class MessageBuffer(object):
 # Making this a non-singleton is left as an exercise for the reader.
 global_message_buffer = MessageBuffer()
 
-
-class BaseHandler(tornado.web.RequestHandler):
-    def get_current_user(self):
-        user_json = self.get_secure_cookie("chatdemo_user")
-        if not user_json: return None
-        return tornado.escape.json_decode(user_json)
-
-
-class MainHandler(BaseHandler):
-    @tornado.web.authenticated
-    def get(self):
-        self.render("index.html", messages=global_message_buffer.cache)
-
-
 class MessageNewHandler(BaseHandler):
     @tornado.web.authenticated
     def post(self):
         message = {
             "id": str(uuid.uuid4()),
-            "from": self.current_user["first_name"],
+            "from": self.current_user,
             "body": self.get_argument("body"),
         }
         # to_basestring is necessary for Python 3's json encoder,
@@ -107,7 +96,6 @@ class MessageNewHandler(BaseHandler):
         else:
             self.write(message)
         global_message_buffer.new_messages([message])
-
 
 class MessageUpdatesHandler(BaseHandler):
     @tornado.web.authenticated
@@ -126,21 +114,28 @@ class MessageUpdatesHandler(BaseHandler):
         global_message_buffer.cancel_wait(self.future)
 
 
-class AuthLoginHandler(BaseHandler, tornado.auth.GoogleMixin):
-    @gen.coroutine
+class MainHandler(BaseHandler):
+    @tornado.web.authenticated
     def get(self):
-        if self.get_argument("openid.mode", None):
-            user = yield self.get_authenticated_user()
-            self.set_secure_cookie("chatdemo_user",
-                                   tornado.escape.json_encode(user))
-            self.redirect("/")
-            return
-        self.authenticate_redirect(ax_attrs=["name"])
+        username = tornado.escape.xhtml_escape(self.current_user)
+        self.render("index.html", messages=global_message_buffer.cache, username=username)
 
-
-class AuthLogoutHandler(BaseHandler):
+class LoginHandler(BaseHandler):
     def get(self):
-        self.clear_cookie("chatdemo_user")
+        self.render("login.html")
+
+        #self.write('<html><body><form action="/login" method="post">' + xsrf_form_html()
+        #           'Name: <input type="text" name="name">'
+        #           '<input type="submit" value="Sign in">' 
+        #           '</form></body></html>')
+
+    def post(self):
+        self.set_secure_cookie("user", self.get_argument("name"))
+        self.redirect("/")
+
+class LogoutHandler(BaseHandler):
+    def get(self):
+        self.clear_cookie("user")
         self.write("You are now logged out")
 
 
@@ -149,13 +144,13 @@ def main():
     app = tornado.web.Application(
         [
             (r"/", MainHandler),
-            (r"/auth/login", AuthLoginHandler),
-            (r"/auth/logout", AuthLogoutHandler),
+            (r"/login", LoginHandler),
+            (r"/logout", LogoutHandler),
             (r"/a/message/new", MessageNewHandler),
             (r"/a/message/updates", MessageUpdatesHandler),
             ],
-        cookie_secret="__TODO:_GENERATE_YOUR_OWN_RANDOM_VALUE_HERE__",
-        login_url="/auth/login",
+        cookie_secret="__WIE_HET_GROTE_NIET_EERT_is_het_kleine_niet_weerd__",
+        login_url="/login",
         template_path=os.path.join(os.path.dirname(__file__), "templates"),
         static_path=os.path.join(os.path.dirname(__file__), "static"),
         xsrf_cookies=True,
