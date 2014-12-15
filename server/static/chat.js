@@ -90,20 +90,15 @@ var updater = {
         $.ajax({
             url: "/a/message/updates", 
             type: "POST", 
-            dataType: "text",
+            dataType: "json",
             data: $.param(args), 
             success: updater.onSuccess,
             error: updater.onError
         });
     },
 
-    onSuccess: function(response) {
-        try {
-            updater.newMessages(eval("(" + response + ")"));
-        } catch (e) {
-            updater.onError();
-            return;
-        }
+    onSuccess: function(json_response) {
+        updater.newMessages(json_response);
         updater.errorSleepTime = 500;
         window.setTimeout(updater.poll, 0);
     },
