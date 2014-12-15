@@ -84,17 +84,18 @@ class MessageNewHandler(BaseHandler):
     def post(self):
         message = {
             "id": str(uuid.uuid4()),
-            "from": self.current_user,
+            "from": tornado.escape.to_basestring(self.current_user),
             "body": self.get_argument("body"),
         }
-        # to_basestring is necessary for Python 3's json encoder,
-        # which doesn't accept byte strings.
+
         message["html"] = tornado.escape.to_basestring(
             self.render_string("message.html", message=message))
+
         if self.get_argument("next", None):
             self.redirect(self.get_argument("next"))
         else:
             self.write(message)
+
         global_message_buffer.new_messages([message])
 
 class MessageUpdatesHandler(BaseHandler):
@@ -124,11 +125,6 @@ class LoginHandler(BaseHandler):
     def get(self):
         self.render("login.html")
 
-        #self.write('<html><body><form action="/login" method="post">' + xsrf_form_html()
-        #           'Name: <input type="text" name="name">'
-        #           '<input type="submit" value="Sign in">' 
-        #           '</form></body></html>')
-
     def post(self):
         self.set_secure_cookie("user", self.get_argument("name"))
         self.redirect("/")
@@ -148,7 +144,7 @@ def main():
             (r"/logout", LogoutHandler),
             (r"/a/message/new", MessageNewHandler),
             (r"/a/message/updates", MessageUpdatesHandler),
-            ],
+        ],
         cookie_secret="__WIE_HET_GROTE_NIET_EERT_is_het_kleine_niet_weerd__",
         login_url="/login",
         template_path=os.path.join(os.path.dirname(__file__), "templates"),
