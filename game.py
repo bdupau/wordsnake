@@ -11,9 +11,7 @@ class Game:
         self._is_started = False
 
     def game_finished(self):
-        if max(self._scores_per_player.values()) > 25:
-            return True
-        return False
+        return max(self._scores_per_player.values()) > 25
 
     def start_game(self, players):
         if len(self._scores_per_player) > 0:
