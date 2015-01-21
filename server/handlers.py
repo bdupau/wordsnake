@@ -8,13 +8,15 @@ from tornado.concurrent import Future
 from tornado import gen
 from messagebuffer import MessageBuffer
 
-global_message_buffer = MessageBuffer()
-
 class BaseHandler(tornado.web.RequestHandler):
     def get_current_user(self):
         return self.get_secure_cookie("user")
 
 class MessageNewHandler(BaseHandler):
+
+    def initialize(self, messagebuffer):
+        self.messagebuffer = messagebuffer
+
     @tornado.web.authenticated
     def post(self):
         message = {
@@ -31,36 +33,45 @@ class MessageNewHandler(BaseHandler):
         else:
             self.write(message)
 
-        global_message_buffer.new_messages([message])
+        self.messagebuffer.new_messages([message])
 
 class MessageUpdatesHandler(BaseHandler):
+
+    def initialize(self, messagebuffer):
+        self.messagebuffer = messagebuffer
+
     @tornado.web.authenticated
     @gen.coroutine
     def post(self):
         cursor = self.get_argument("cursor", None)
         # Save the future returned by wait_for_messages so we can cancel
         # it in wait_for_messages
-        self.future = global_message_buffer.wait_for_messages(cursor=cursor)
+        self.future = self.messagebuffer.wait_for_messages(cursor=cursor)
         messages = yield self.future
         if self.request.connection.stream.closed():
             return
         self.write(dict(messages=messages))
 
     def on_connection_close(self):
-        global_message_buffer.cancel_wait(self.future)
+        self.messagebuffer.cancel_wait(self.future)
 
 
 class MainHandler(BaseHandler):
+
+    def initialize(self, messagebuffer):
+        self.messagebuffer = messagebuffer
+
     @tornado.web.authenticated
     def get(self):
         username = tornado.escape.xhtml_escape(self.current_user)
         self.render(
             "index.html", 
-            messages = global_message_buffer.cache, 
+            messages = self.messagebuffer.cache, 
             username = username
         )
 
 class LoginHandler(BaseHandler):
+
     def get(self):
         self.render("login.html")
 

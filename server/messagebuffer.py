@@ -1,3 +1,4 @@
+import logging
 from tornado.concurrent import Future
 
 class MessageBuffer(object):
